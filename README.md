@@ -17,9 +17,9 @@ The configuration is flexible, with environment variables allowing for easy adju
 
 To get started, ensure you have Docker and Docker Compose installed. Then, navigate to the project directory and run:
 
-\```bash
+```bash
 docker-compose up -d
-\```
+```
 
 This will start all the services in detached mode. You can then access the application via your browser.
 
