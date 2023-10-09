@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -15,8 +16,15 @@
  * @var string $content
  */
 
-$lines = explode("\n", $content);
+// $lines = explode("\n", $content);
 
-foreach ($lines as $line) :
-    echo '<p> ' . $line . "</p>\n";
-endforeach;
+// foreach ($lines as $line) :
+//     echo '<p> ' . $line . "</p>\n";
+// endforeach;
+?>
+
+<h1>Welcome to the network</h1>
+
+<p>Thank you for joining the network. We are excited to have you on board.</p>
+<p>Subject: <?= h($subject); ?></p>
+<p>Body: <?= h($body); ?></p>

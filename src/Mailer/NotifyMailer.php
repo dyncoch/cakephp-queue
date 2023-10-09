@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Mailer;
@@ -21,10 +22,12 @@ class NotifyMailer extends Mailer
      */
     public static $name = 'Notify';
 
-    public function notify(string $emailAddress, string $username): void
+    public function notify(string $emailAddress, string $username, array $data): void
     {
         $this
             ->setTo($emailAddress)
+            ->setViewVars($data)
+            ->setEmailFormat('both')
             ->setSubject(sprintf('Welcome %s', $username));
     }
 }

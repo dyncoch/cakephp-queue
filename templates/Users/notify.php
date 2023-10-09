@@ -16,7 +16,7 @@ $this->Html->css('fix', ['block' => true]);
     </aside>
     <div class="column-responsive column-80">
         <div class="users form content">
-            <?= $this->Form->create(null) ?>
+            <?= $this->Form->create($form) ?>
             <fieldset>
                 <legend><?= __('Notify User') ?></legend>
                 <?php
@@ -31,7 +31,11 @@ $this->Html->css('fix', ['block' => true]);
 
                 echo $this->Form->control(
                     'users',
-                    ['options' => $users, 'multiple' => 'checkbox']
+                    [
+                        'options' => $users,
+                        'multiple' => 'checkbox',
+                        'required' => false,
+                    ]
                 );
 
                 $this->Form->setTemplates([

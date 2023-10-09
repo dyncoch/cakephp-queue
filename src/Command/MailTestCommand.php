@@ -50,6 +50,6 @@ class MailTestCommand extends Command
          */
         $mailer = $this->getMailer('Notify');
 
-        $mailer->send('notify', ['dyncoch@gmail.com', 'Lucas Martins']);
+        $mailer->send('notify', ['dyncoch@gmail.com', 'Lucas Martins', ['body' => '<h1>Teste</h1>', 'subject' => 'Teste']]);
     }
 }

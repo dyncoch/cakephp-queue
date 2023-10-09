@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\NotifyForm;
 use Cake\Mailer\MailerAwareTrait;
+use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 
 /**
  * Users Controller
@@ -111,14 +114,18 @@ class UsersController extends AppController
 
     public function notify()
     {
+        $form = new NotifyForm();
+
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            $userIds = $data['users'];
+            if ($form->execute($data)) {
 
-            unset($data['users']);
+                $userIds = $data['users'];
 
-            if (is_array($userIds)) {
+                unset($data['users']);
+
+
                 foreach ($userIds as $userId) {
                     $user = $this->Users->get($userId);
 
@@ -127,12 +134,17 @@ class UsersController extends AppController
                      */
                     $mailer = $this->getMailer('Notify');
 
-                    $mailer->push('notify', [$user['email'], $user['full_name']]);
+                    $mailer->push('notify', [$user['email'], $user['full_name'], $data]);
                 }
+
+                $this->Flash->success(__('The users have been notified.'));
+            } else {
+                $errors = Text::toList(array_map([new Inflector, 'humanize'],  array_keys($form->getErrors())));
+                $this->Flash->error(__('Please correct the errors. ' . $errors . ' fields are required.'));
             }
         }
 
         $users = $this->Users->find('list');
-        $this->set(compact('users'));
+        $this->set(compact('users', 'form'));
     }
 }
