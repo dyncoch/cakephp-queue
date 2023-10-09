@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Command;
@@ -8,12 +9,15 @@ use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
 use Cake\Mailer\Mailer;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * MailTest command.
  */
 class MailTestCommand extends Command
 {
+    use MailerAwareTrait;
+
     /**
      * Hook method for defining this command's option parser.
      *
@@ -37,8 +41,15 @@ class MailTestCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        (new Mailer())->setTo('dyncoch@gmal.com', 'Dyncoch')
-            ->setSubject('Test')
-            ->deliver('This is a test');
+        // (new Mailer())->setTo('dyncoch@gmal.com', 'Dyncoch')
+        //     ->setSubject('Test')
+        //     ->deliver('This is a test');
+
+        /**
+         * @var \App\Mailer\NotifyMailer $mailer
+         */
+        $mailer = $this->getMailer('Notify');
+
+        $mailer->send('notify', ['dyncoch@gmail.com', 'Lucas Martins']);
     }
 }
