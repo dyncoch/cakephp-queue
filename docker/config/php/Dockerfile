@@ -15,24 +15,18 @@ RUN apt-get update && apt-get install -y \
     yui-compressor \
     poppler-utils libtidy-dev \
     icu-devtools libicu-dev \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd 
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs
 
 RUN docker-php-ext-install intl pdo pdo_mysql
 
 RUN cd /usr/local/etc/php/conf.d/ && \
     echo 'memory_limit = 512M' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
-
-
-
-RUN mkdir /build && apArch=$(arch); \
-    case "$apArch" in \
-    x86_64) export DISTRO='linux-x64' ;; \
-    aarch64) export DISTRO='linux-arm64' ;;\
-    esac;\ 
-    cd /build && \
-    wget https://nodejs.org/dist/${VERSION}/node-${VERSION}-${DISTRO}.tar.xz && \
-    tar -xvf node-${VERSION}-${DISTRO}.tar.xz --strip-components=1 -C /usr/local
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug

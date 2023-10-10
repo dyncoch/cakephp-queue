@@ -72,20 +72,20 @@ class AddUserWorkerListener implements EventListenerInterface
 
     public function processorMessageSuccess(Event $message)
     {
-        $this->log("add_user Job Queue", LogLevel::INFO);
-        $this->log(__METHOD__, LogLevel::INFO);
+        // $this->log("add_user Job Queue", LogLevel::INFO);
+        // $this->log(__METHOD__, LogLevel::INFO);
         /**
          * @var \Cake\Queue\Job\Message $cakeMessage
          */
-        // $cakeMessage = $message->getData('message');
+        $cakeMessage = $message->getData('message');
 
-        // // $this->log(print_r($cakeMessage->getArgument(), true));
+        // $this->log(print_r($cakeMessage->getArgument(), true));
 
-        // $email = $cakeMessage->getArgument()['args'][0];
+        $email = $cakeMessage->getArgument()['email'];
 
-        // $fullName = $cakeMessage->getArgument()['args'][1];
+        $fullName = $cakeMessage->getArgument()['full_name'];
 
-        // $this->log("Success: {$fullName} <{$email}>", LogLevel::INFO);
+        $this->log("Success fully added user: {$fullName} <{$email}>", LogLevel::INFO);
     }
 
     public function processorMessageFailure($message)
