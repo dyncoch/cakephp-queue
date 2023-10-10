@@ -74,7 +74,10 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
+        $rules->add($rules->isUnique(['email']), [
+            'message' => 'Email already exists',
+            'errorField' => 'email'
+        ]);
 
         return $rules;
     }

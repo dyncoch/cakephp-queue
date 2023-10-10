@@ -30,4 +30,13 @@ class NotifyMailer extends Mailer
             ->setEmailFormat('both')
             ->setSubject(sprintf('Welcome %s', $username));
     }
+
+    public function failed(string $emailAddress, string $username, string $errors): void
+    {
+        $this
+            ->setTo(["admin@example.com" => "Admin"]) // hardcoded for demo purposes            
+            ->setSubject(sprintf('Failed to add user %s <%s> - %s', $username, $emailAddress, $errors))
+            ->viewBuilder()
+            ->setTemplate(null);
+    }
 }
