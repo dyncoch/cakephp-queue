@@ -12,6 +12,8 @@ use Cake\Utility\Hash;
 use Cake\Utility\Text;
 use Interop\Queue\Processor;
 
+use function PHPUnit\Framework\throwException;
+
 /**
  * AddUser job
  */
@@ -20,6 +22,15 @@ class AddUserJob implements JobInterface
 
     use LocatorAwareTrait;
     use MailerAwareTrait;
+
+    /**
+     * The maximum number of times the job may be attempted.
+     * 
+     * @var int|null
+     */
+    public static $maxAttempts = 3;
+
+
     /**
      * Executes logic for AddUserJob
      *
@@ -52,9 +63,8 @@ class AddUserJob implements JobInterface
                 ['config' => 'default']
             );
 
-
-
-            return Processor::REJECT;
+            // Throw an exception with the error message
+            throw new \Exception("Failed to save user. Errors: " . $errors);
         }
         return Processor::ACK;
     }

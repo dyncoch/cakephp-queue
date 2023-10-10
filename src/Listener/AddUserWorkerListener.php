@@ -57,7 +57,19 @@ class AddUserWorkerListener implements EventListenerInterface
 
     public function processorMessageException($message, $exception)
     {
-        $this->log(__METHOD__);
+        // $this->log(__METHOD__);
+        /**
+         * @var \Cake\Queue\Job\Message $cakeMessage
+         */
+        $cakeMessage = $message->getData('message');
+
+        // $this->log(print_r($cakeMessage->getArgument(), true));
+
+        $email = $cakeMessage->getArgument()['email'];
+
+        $fullName = $cakeMessage->getArgument()['full_name'];
+
+        $this->log("Failed to add user: {$fullName} <{$email}>", LogLevel::ERROR);
     }
 
     public function processorMessageInvalid($message)
@@ -67,6 +79,7 @@ class AddUserWorkerListener implements EventListenerInterface
 
     public function processorMessageReject($message)
     {
+        $this->log('processorMessageReject');
         $this->log(__METHOD__);
     }
 
