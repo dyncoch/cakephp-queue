@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Entity;
@@ -39,4 +40,12 @@ class QueueFailedJob extends Entity
         'exception' => true,
         'created' => true,
     ];
+
+    /**
+     * @return array
+     */
+    protected function _getDecodedData(): array
+    {
+        return json_decode($this->data, true);
+    }
 }

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\QueueFailedJob> $queueFailedJobs
  */
 ?>
 <div class="queueFailedJobs index content">
-    <?= $this->Html->link(__('New Queue Failed Job'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <?= $this->Form->postLink(__('Re-queue all failed jobs'), ['action' => 'requeue'], ['confirm' => __('Are you sure you want to requeue all the jobs?'), 'class' => 'button float-right']) ?>
     <h3><?= __('Queue Failed Jobs') ?></h3>
     <div class="table-responsive">
         <table>
@@ -22,21 +23,22 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($queueFailedJobs as $queueFailedJob): ?>
-                <tr>
-                    <td><?= $this->Number->format($queueFailedJob->id) ?></td>
-                    <td><?= h($queueFailedJob->class) ?></td>
-                    <td><?= h($queueFailedJob->method) ?></td>
-                    <td><?= h($queueFailedJob->config) ?></td>
-                    <td><?= h($queueFailedJob->priority) ?></td>
-                    <td><?= h($queueFailedJob->queue) ?></td>
-                    <td><?= h($queueFailedJob->created) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $queueFailedJob->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $queueFailedJob->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $queueFailedJob->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queueFailedJob->id)]) ?>
-                    </td>
-                </tr>
+                <?php foreach ($queueFailedJobs as $queueFailedJob) : ?>
+                    <tr>
+                        <td><?= $this->Number->format($queueFailedJob->id) ?></td>
+                        <td><?= h($queueFailedJob->class) ?></td>
+                        <td><?= h($queueFailedJob->method) ?></td>
+                        <td><?= h($queueFailedJob->config) ?></td>
+                        <td><?= h($queueFailedJob->priority) ?></td>
+                        <td><?= h($queueFailedJob->queue) ?></td>
+                        <td><?= h($queueFailedJob->created) ?></td>
+                        <td class="actions">
+                            <?= $this->Form->postLink(__('Re-queue'), ['action' => 'requeue', $queueFailedJob->id], ['confirm' => __('Are you sure you want to requeue # {0}?', $queueFailedJob->id)]) ?>
+                            <?= $this->Html->link(__('View'), ['action' => 'view', $queueFailedJob->id]) ?>
+                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $queueFailedJob->id]) ?>
+                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $queueFailedJob->id], ['confirm' => __('Are you sure you want to delete # {0}?', $queueFailedJob->id)]) ?>
+                        </td>
+                    </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>

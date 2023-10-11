@@ -1,7 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
+
+use Cake\Queue\QueueManager;
+use Exception;
 
 /**
  * QueueFailedJobs Controller
@@ -11,6 +15,8 @@ namespace App\Controller;
  */
 class QueueFailedJobsController extends AppController
 {
+
+
     /**
      * Index method
      *
@@ -36,26 +42,6 @@ class QueueFailedJobsController extends AppController
             'contain' => [],
         ]);
 
-        $this->set(compact('queueFailedJob'));
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $queueFailedJob = $this->QueueFailedJobs->newEmptyEntity();
-        if ($this->request->is('post')) {
-            $queueFailedJob = $this->QueueFailedJobs->patchEntity($queueFailedJob, $this->request->getData());
-            if ($this->QueueFailedJobs->save($queueFailedJob)) {
-                $this->Flash->success(__('The queue failed job has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The queue failed job could not be saved. Please, try again.'));
-        }
         $this->set(compact('queueFailedJob'));
     }
 
@@ -99,6 +85,57 @@ class QueueFailedJobsController extends AppController
         } else {
             $this->Flash->error(__('The queue failed job could not be deleted. Please, try again.'));
         }
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    public function requeue($id = null)
+    {
+        $this->request->allowMethod(['post', 'requeue']);
+
+        $failedJobsQuery = $this->QueueFailedJobs->find();
+
+        if ($id !== null) {
+            $failedJobsQuery->where(['id' => $id]);
+        }
+
+        $failedJobsCount = $failedJobsQuery->count();
+        if (!$failedJobsCount) {
+            $this->Flash->error(__('No jobs found.'));
+            return $this->redirect(['action' => 'index']);
+        }
+
+        $jobsToRequeue = $failedJobsQuery->all();
+
+        $succeededCount = 0;
+        $failedCount = 0;
+
+        foreach ($jobsToRequeue as $failedJob) {
+            $this->log('Requeueing FailedJob with ID ' . $failedJob->id, 'debug');
+            try {
+                QueueManager::push(
+                    [$failedJob->class, $failedJob->method],
+                    $failedJob->decoded_data,
+                    [
+                        'config' => $failedJob->config,
+                        'priority' => $failedJob->priority,
+                        'queue' => $failedJob->queue,
+                    ]
+                );
+
+                $this->QueueFailedJobs->deleteOrFail($failedJob);
+
+                $succeededCount++;
+            } catch (Exception $e) {
+                $this->log("Exception occurred while requeueing FailedJob with ID {$failedJob->id}", 'error');
+                $this->log((string)$e, 'error');
+
+                $failedCount++;
+            }
+        }
+
+        $this->Flash->success(__('Requeued {0} jobs.', $succeededCount));
+        $this->Flash->error(__('Failed to requeue {0} jobs.', $failedCount));
 
         return $this->redirect(['action' => 'index']);
     }
