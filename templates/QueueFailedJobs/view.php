@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QueueFailedJob $queueFailedJob
@@ -45,6 +46,14 @@
                 <tr>
                     <th><?= __('Created') ?></th>
                     <td><?= h($queueFailedJob->created) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Email') ?></th>
+                    <td><?= h($queueFailedJob->email) ?></td>
+                </tr>
+                <tr>
+                    <th><?= __('Full Name') ?></th>
+                    <td><?= h($queueFailedJob->full_name) ?></td>
                 </tr>
             </table>
             <div class="text">

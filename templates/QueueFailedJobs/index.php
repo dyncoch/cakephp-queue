@@ -14,11 +14,13 @@
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
                     <th><?= $this->Paginator->sort('class') ?></th>
-                    <th><?= $this->Paginator->sort('method') ?></th>
+                    <!-- <th><?= $this->Paginator->sort('method') ?></th> -->
                     <th><?= $this->Paginator->sort('config') ?></th>
                     <th><?= $this->Paginator->sort('priority') ?></th>
                     <th><?= $this->Paginator->sort('queue') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
+                    <th><?= $this->Paginator->sort('email') ?></th>
+                    <th><?= $this->Paginator->sort('full_name') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -27,11 +29,13 @@
                     <tr>
                         <td><?= $this->Number->format($queueFailedJob->id) ?></td>
                         <td><?= h($queueFailedJob->class) ?></td>
-                        <td><?= h($queueFailedJob->method) ?></td>
+                        <!-- <td><?= h($queueFailedJob->method) ?></td> -->
                         <td><?= h($queueFailedJob->config) ?></td>
                         <td><?= h($queueFailedJob->priority) ?></td>
                         <td><?= h($queueFailedJob->queue) ?></td>
                         <td><?= h($queueFailedJob->created) ?></td>
+                        <td><?= h($queueFailedJob->email) ?></td>
+                        <td><?= h($queueFailedJob->full_name) ?></td>
                         <td class="actions">
                             <?= $this->Form->postLink(__('Re-queue'), ['action' => 'requeue', $queueFailedJob->id], ['confirm' => __('Are you sure you want to requeue # {0}?', $queueFailedJob->id)]) ?>
                             <?= $this->Html->link(__('View'), ['action' => 'view', $queueFailedJob->id]) ?>

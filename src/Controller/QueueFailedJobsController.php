@@ -26,6 +26,10 @@ class QueueFailedJobsController extends AppController
     {
         $queueFailedJobs = $this->paginate($this->QueueFailedJobs);
 
+        $queueFailedJobs->each(function ($failedJob) {
+            $failedJob->set($failedJob->decoded_data);
+        });
+
         $this->set(compact('queueFailedJobs'));
     }
 
@@ -41,6 +45,8 @@ class QueueFailedJobsController extends AppController
         $queueFailedJob = $this->QueueFailedJobs->get($id, [
             'contain' => [],
         ]);
+
+        $queueFailedJob->set($queueFailedJob->decoded_data);
 
         $this->set(compact('queueFailedJob'));
     }
