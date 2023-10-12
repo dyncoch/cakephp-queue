@@ -57,8 +57,19 @@ class QueueFailedJobsController extends AppController
         $queueFailedJob = $this->QueueFailedJobs->get($id, [
             'contain' => [],
         ]);
+
+        $queueFailedJob->set($queueFailedJob->decoded_data);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $queueFailedJob = $this->QueueFailedJobs->patchEntity($queueFailedJob, $this->request->getData());
+            $queueFailedJob = $this->QueueFailedJobs->patchEntity($queueFailedJob, $this->request->getData(), [
+                'fields' => ['email', 'full_name']
+            ]);
+
+            $queueFailedJob->data = json_encode([
+                'email' => $queueFailedJob->email,
+                'full_name' => $queueFailedJob->full_name,
+            ]);
+
             if ($this->QueueFailedJobs->save($queueFailedJob)) {
                 $this->Flash->success(__('The queue failed job has been saved.'));
 

@@ -31,14 +31,16 @@ class QueueFailedJob extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'class' => true,
-        'method' => true,
+        'class' => false,
+        'method' => false,
         'data' => true,
-        'config' => true,
-        'priority' => true,
-        'queue' => true,
-        'exception' => true,
-        'created' => true,
+        'config' => false,
+        'priority' => false,
+        'queue' => false,
+        'exception' => false,
+        'created' => false,
+        'email' => true,
+        'full_name' => true,
     ];
 
     /**

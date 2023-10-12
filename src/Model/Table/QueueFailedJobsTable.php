@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Table;
@@ -91,6 +92,18 @@ class QueueFailedJobsTable extends Table
         $validator
             ->scalar('exception')
             ->allowEmptyString('exception');
+
+        $validator
+            ->scalar('email')
+            ->maxLength('email', 255)
+            ->requirePresence('email', 'update')
+            ->notEmptyString('email');
+
+        $validator
+            ->scalar('full_name')
+            ->maxLength('full_name', 255)
+            ->requirePresence('full_name', 'update')
+            ->notEmptyString('full_name');
 
         return $validator;
     }

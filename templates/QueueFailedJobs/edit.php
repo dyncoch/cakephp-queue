@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QueueFailedJob $queueFailedJob
@@ -22,13 +23,16 @@
             <fieldset>
                 <legend><?= __('Edit Queue Failed Job') ?></legend>
                 <?php
-                    echo $this->Form->control('class');
-                    echo $this->Form->control('method');
-                    echo $this->Form->control('data');
-                    echo $this->Form->control('config');
-                    echo $this->Form->control('priority');
-                    echo $this->Form->control('queue');
-                    echo $this->Form->control('exception');
+                // echo $this->Form->control('class');
+                // echo $this->Form->control('method');
+                // echo $this->Form->control('data');
+                // echo $this->Form->control('config');
+                // echo $this->Form->control('priority');
+                // echo $this->Form->control('queue');
+                // echo $this->Form->control('exception');
+                echo $this->Form->control('email', ['type' => 'email', 'required' => true]);
+                echo $this->Form->control('full_name', ['required' => true]);
+                // dd($queueFailedJob);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
